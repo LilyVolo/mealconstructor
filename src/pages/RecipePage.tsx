@@ -67,7 +67,10 @@ interface Summary {
         ))}
       </div>
     <Link to='/'>
-    <button > Back </button>
+    <button className="px-6 py-3 text-white font-bold rounded-lg bg-[#9E99BF] hover:bg-[#857DA6] focus:ring-4 focus:ring-[#B4B0D0] shadow-md transition">
+    Back
+</button>
+
     </Link>
     </div>
   )

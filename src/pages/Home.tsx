@@ -3,7 +3,9 @@ import axios from 'axios'
 import styles from '../styles/Home.module.css'
 import IngredientsForm from '../components/IngredientsForm';
 import RecipeBlock from '../components/RecipeBlock.tsx'
-
+import Header from '../components/Header.tsx'
+import Footer from '../components/Footer.tsx'
+import '../App.css'
 
 interface Recipe {
   id: number;
@@ -48,8 +50,11 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className={styles.parent}>
-      <div className={styles.container}>
+    <div className='mainLayOut'>
+      <Header/>
+      <div className="main-container flex flex-col justify-center items-center">
+      <h1 className="text-3xl text-[#01260A] font-bold mb-10 ">
+          Please, put down what you have in friedge</h1>
         <IngredientsForm handleFetch={handleFetch} />
         <div>
           {recipes.map((recipe, i) => (
@@ -57,6 +62,7 @@ const Home: React.FC = () => {
           ))}
         </div>
       </div>
+        <Footer/>
     </div>
   );
   

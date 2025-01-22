@@ -1,4 +1,5 @@
 import React from 'react'
+
 interface IngredientsFormProps {
     handleFetch: (ingredients: string[]) => void; // Типизация функции
   }
@@ -38,8 +39,10 @@ const IngredientsForm: React.FC<IngredientsFormProps> = ({ handleFetch }) => {
       )
     })}
     
-        <button type='submit'>Get results</button>
-        <button type='button' onClick={onAddIngredient}>Add one more ingredient</button>
+        <button type='submit' className="px-6 py-3 text-white font-bold rounded-lg bg-[#9E99BF] hover:bg-[#857DA6] focus:ring-4 focus:ring-[#B4B0D0] shadow-md transition mr-3 mt-4">
+          Get results</button>
+        <button type='button' onClick={onAddIngredient} className="px-6 py-3 text-white font-bold rounded-lg bg-[#9E99BF] hover:bg-[#857DA6] focus:ring-4 focus:ring-[#B4B0D0] shadow-md transition  mt-4">
+        Add one more ingredient</button>
 
 </form>
   )
