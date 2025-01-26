@@ -5,6 +5,7 @@ import IngredientsForm from '../components/IngredientsForm';
 import RecipeBlock from '../components/RecipeBlock.tsx'
 import Header from '../components/Header.tsx'
 import Footer from '../components/Footer.tsx'
+import HeroSection from '../components/HeroSection.tsx'
 import '../App.css'
 
 interface Recipe {
@@ -50,19 +51,22 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className='mainLayOut'>
-      <Header/>
-      <div className="main-container flex flex-col justify-center items-center">
-      <h1 className="text-3xl text-[#01260A] font-bold mb-10 ">
+    <div className='h-full'>
+      <HeroSection/>
+  
+      <div className="main-container flex flex-col justify-center items-center h-full">
+        <div className="flex flex-col justify-center items-center ">
+      <h1 className="text-3xl text-[#01260A] font-bold mb-10">
           Please, put down what you have in friedge</h1>
-        <IngredientsForm handleFetch={handleFetch} />
-        <div>
+        <IngredientsForm handleFetch={handleFetch} />s
+        </div>
+        <div className="grid grid-cols-3 gap-4">
           {recipes.map((recipe, i) => (
-            <RecipeBlock key={i} {...recipe} />
+            (i<9) && <RecipeBlock key={i} {...recipe} />
           ))}
         </div>
       </div>
-        <Footer/>
+     
     </div>
   );
   

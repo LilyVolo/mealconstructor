@@ -13,55 +13,63 @@ interface RecipeInstruction {
   steps: Step[];
 }
 
-interface Summary {
-    id: number;
-    summary: string;
-    title: string;
-}
 
  const RecipePage: React.FC<RecipeInstruction> = () => {
 
   const [recipe, setRecipe] = React.useState<RecipeInstruction[] | null>(null)
-  const [summary, setSummary] = React.useState<Summary | null >(null)
+
+  const [infoRecipe, setInfoRecipe] = React.useState<any>(null)
 
   const { id } = useParams<{ id: string }>();
+  
+  let summary;
 
   React.useEffect(() => {
     async function fetchOneRecepie () {
       try {
         const params = { apiKey: apiKey };
     
-        const [instructionsResponse, summaryResponse] = await Promise.all([
+        const [instructionsResponse, infoRecipeResponse] = await Promise.all([
           axios.get<RecipeInstruction[]>(
             `https://api.spoonacular.com/recipes/${id}/analyzedInstructions`,
             { params }
           ),
-          axios.get<Summary>(
-            `https://api.spoonacular.com/recipes/${id}/summary`,
+          axios.get<any>(
+            `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false`,
             { params }
           ),
         ]);
     
         setRecipe(instructionsResponse.data)
-        setSummary(summaryResponse.data)
-        console.log(summaryResponse.data, 'check')
+        setInfoRecipe(infoRecipeResponse.data)
 
       }  catch (error) {
         alert('There is a problem with this recipe');
       }}
-      fetchOneRecepie ()
+      fetchOneRecepie()
   }, [id])
 
-  if (!recipe) {
+  if (infoRecipe && infoRecipe.summary) {
+    summary = infoRecipe.summary.replace(/<\/?[^>]+(>|$)/g, "");
+    console.log(summary, 'check');
+  } else {
+    console.error('infoRecipe.summary is not available or valid:', infoRecipe);
+  }
+
+
+  if (!recipe || !infoRecipe) {
     return <div>Loading...</div>;
   }
 
+
   return (
-    <div>
-    <div>RecipePage</div>
-       <div>
-        <h1>{summary?.title}</h1>
-        <p>{summary?.summary}</p>
+    <div className='flex flex-col justify-center items-center pr-20 pl-20'>
+  <h1>{infoRecipe.title}</h1>
+       <div >
+       
+        <img src={infoRecipe.image} alt="" />
+        
+        <p>{summary}</p>
         {recipe[0]?.steps.map((step) => (
           <p key={step.number}>{`Step ${step.number}: ${step.step}`}</p>
         ))}

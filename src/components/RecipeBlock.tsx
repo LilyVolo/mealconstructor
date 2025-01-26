@@ -19,7 +19,7 @@ interface RecipeProps {
     const miss = missedIngredients
   return (
     <Link   to={`/recipe/${id}`} >
-    <div key={id}>
+    <div key={id} className='containerRecipieBlock m-10'>
        <h1>{title}</h1>
        <img src={image} alt={title}/>
        <h1>likes: {likes} </h1>
