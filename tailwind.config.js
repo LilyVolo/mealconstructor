@@ -17,11 +17,26 @@ export default {
         montserrat: ['Montserrat', 'sans-serif']
       },
       backgroundImage: {
-        heroGradient: 'linear-gradient(90deg, rgba(9,108,17,1) 3%, rgba(47,163,95,1) 15%, rgba(129,227,126,0.9892550770308123) 37%, rgba(220,227,126,0.9500393907563025) 75%);'
+        heroGradient: 'linear-gradient(90deg, rgba(9,108,17,1) 3%, rgba(47,163,95,1) 15%, rgba(129,227,126,0.9892550770308123) 37%, rgba(220,227,126,0.9500393907563025) 75%);',
+        gradient: 'linear-gradient(90deg, rgb(9,108,17) 3%, rgb(47,163,95) 15%, rgb(129,227,126) 37%, rgb(220,227,126) 75%)'
       },
       colors: {
-        myGreen: '#01260A'
-      }
+        myGreen: '#01260A',
+        grayOpacity: 'rgba(107, 114, 128, 0.5)'
+      },
+      keyframes: {
+        'fade-in': {
+          from: {
+              opacity: 0
+          },
+          to: {
+              opacity: 1
+          }
+        }
+      },
+      animation: {
+        fadeIn: '.5s fade-in ease-in-out'
+      },
     },
   },
   plugins: [],

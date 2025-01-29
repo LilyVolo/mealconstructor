@@ -35,13 +35,20 @@ interface RecipeInstruction {
             { params }
           ),
           axios.get<any>(
-            `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false`,
+            `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=true`,
             { params }
           ),
         ]);
     
         setRecipe(instructionsResponse.data)
         setInfoRecipe(infoRecipeResponse.data)
+      
+        console.log(infoRecipeResponse.data, '222222222222')
+        
+        const calories = infoRecipeResponse.data.nutrition.nutrients.find(
+          (nutrient:any) => nutrient.name === "Calories"
+        );
+        console.log(calories, '333333333')
 
       }  catch (error) {
         alert('There is a problem with this recipe');
@@ -51,7 +58,6 @@ interface RecipeInstruction {
 
   if (infoRecipe && infoRecipe.summary) {
     summary = infoRecipe.summary.replace(/<\/?[^>]+(>|$)/g, "");
-    console.log(summary, 'check');
   } else {
     console.error('infoRecipe.summary is not available or valid:', infoRecipe);
   }
@@ -75,7 +81,7 @@ interface RecipeInstruction {
         ))}
       </div>
     <Link to='/'>
-    <button className="px-6 py-3 text-white font-bold rounded-lg bg-[#9E99BF] hover:bg-[#857DA6] focus:ring-4 focus:ring-[#B4B0D0] shadow-md transition">
+    <button className="btn-custom">
     Back
 </button>
 

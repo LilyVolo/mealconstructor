@@ -29,8 +29,9 @@ const IngredientsForm: React.FC<IngredientsFormProps> = ({ handleFetch }) => {
     { ingredients.map((ingredient, index) => {
       return (
         <div key={index}>
-          <label> {index+1}</label>
+          <label className='mr-8'> {index+1}</label>
           <input
+          className='mt-6'
           type='text'
           value={ingredient}
           onChange={(e)=>handleChange(index, e.target.value)}
@@ -39,9 +40,9 @@ const IngredientsForm: React.FC<IngredientsFormProps> = ({ handleFetch }) => {
       )
     })}
     
-        <button type='submit' className="px-6 py-3 text-white font-bold rounded-lg bg-[#9E99BF] hover:bg-[#857DA6] focus:ring-4 focus:ring-[#B4B0D0] shadow-md transition mr-3 mt-4">
-          Get results</button>
-        <button type='button' onClick={onAddIngredient} className="px-6 py-3 text-white font-bold rounded-lg bg-[#9E99BF] hover:bg-[#857DA6] focus:ring-4 focus:ring-[#B4B0D0] shadow-md transition  mt-4">
+        <button type='submit' className="btn-custom mr-10 mt-8"
+        > Get results</button>
+        <button type='button' onClick={onAddIngredient} className="btn-custom mt-8">
         Add one more ingredient</button>
 
 </form>
