@@ -13,23 +13,94 @@ interface RecipeInstruction {
   steps: Step[];
 }
 
+type Calories = {
+  amount: number;
+  name: string;
+  unit: string;
+  percentOfDailyNeeds: number;
+};
+interface Recipe {
+  vegetarian: boolean;
+  vegan: boolean;
+  glutenFree: boolean;
+  dairyFree: boolean;
+  veryHealthy: boolean;
+  cheap: boolean;
+  veryPopular: boolean;
+  sustainable: boolean;
+  lowFodmap: boolean;
+  weightWatcherSmartPoints: number;
+  aggregateLikes: number;
+  analyzedInstructions: Instruction[];
+  cookingMinutes: number | null;
+  creditsText: string;
+  cuisines: string[];
+  diets: string[];
+  dishTypes: string[];
+  extendedIngredients: Ingredient[];
+  gaps: string;
+  healthScore: number;
+  id: number;
+  image: string;
+  imageType: string;
+  instructions: string;
+  license: string;
+  nutrition: Nutrition;
+  occasions: string[];
+  originalId: string | null;
+  preparationMinutes: number | null;
+  pricePerServing: number;
+  readyInMinutes: number;
+  servings: number;
+  sourceName: string;
+  sourceUrl: string;
+  spoonacularScore: number;
+  spoonacularSourceUrl: string;
+  summary: string;
+  title: string;
+}
+
+interface Instruction {
+  step: string;
+  number: number;
+}
+
+interface Ingredient {
+  name: string;
+  amount: number;
+  unit: string;
+}
+
+interface Nutrition {
+  nutrients: Nutrient[];
+  properties: any[];
+  flavonoids: any[];
+}
+
+interface Nutrient {
+  name: string;
+  amount: number;
+  unit: string;
+  percentOfDailyNeeds: number;
+}
+
 
  const RecipePage: React.FC<RecipeInstruction> = () => {
 
-  const [recipe, setRecipe] = React.useState<RecipeInstruction[] | null>(null)
+  const [recipeIntruction, setRecipeIntruction] = React.useState<RecipeInstruction[] | null>(null)
 
-  const [infoRecipe, setInfoRecipe] = React.useState<any>(null)
+  const [infoRecipe, setInfoRecipe] = React.useState<Recipe | null>(null)
 
-  const { id } = useParams<{ id: string }>();
-  
-  let summary;
+  const [calories, setCalories] = React.useState<Calories | null>(null);
+
+  const { id } = useParams<{ id: string }>()
 
   React.useEffect(() => {
     async function fetchOneRecepie () {
       try {
-        const params = { apiKey: apiKey };
+        const params = { apiKey: apiKey }
     
-        const [instructionsResponse, infoRecipeResponse] = await Promise.all([
+        const [respRecipe, infoRecipeResponse] = await Promise.all([
           axios.get<RecipeInstruction[]>(
             `https://api.spoonacular.com/recipes/${id}/analyzedInstructions`,
             { params }
@@ -39,53 +110,73 @@ interface RecipeInstruction {
             { params }
           ),
         ]);
-    
-        setRecipe(instructionsResponse.data)
+       setRecipeIntruction(respRecipe.data)
+     
         setInfoRecipe(infoRecipeResponse.data)
       
-        console.log(infoRecipeResponse.data, '222222222222')
-        
-        const calories = infoRecipeResponse.data.nutrition.nutrients.find(
-          (nutrient:any) => nutrient.name === "Calories"
+       
+        const calorieData = infoRecipeResponse.data.nutrition?.nutrients?.find(
+          (nutrient: any) => nutrient.name === "Calories"
         );
-        console.log(calories, '333333333')
 
+        if (calorieData) {
+          setCalories(calorieData )
+        }
+
+        console.log(respRecipe.data, 'recipe')
+        console.log(infoRecipeResponse.data, '55555555555')
+  
       }  catch (error) {
         alert('There is a problem with this recipe');
       }}
       fetchOneRecepie()
-  }, [id])
-
-  if (infoRecipe && infoRecipe.summary) {
-    summary = infoRecipe.summary.replace(/<\/?[^>]+(>|$)/g, "");
-  } else {
-    console.error('infoRecipe.summary is not available or valid:', infoRecipe);
-  }
+    }, [id])
+    
+    const summary = infoRecipe?.summary
+    ? infoRecipe.summary.replace(/<\/?[^>]+(>|$)/g, "")
+    : "Описание недоступно";
 
 
-  if (!recipe || !infoRecipe) {
+  if (!recipeIntruction || !infoRecipe || !calories) {
     return <div>Loading...</div>;
   }
 
 
   return (
     <div className='flex flex-col justify-center items-center pr-20 pl-20'>
-  <h1>{infoRecipe.title}</h1>
-       <div >
-       
+    <h1>{infoRecipe.title}</h1>
+       <div className='flex' >
+       <div>
         <img src={infoRecipe.image} alt="" />
-        
+       </div>
+       <div>
+        <p>{calories?.name}: {calories?.amount}</p> 
+        <p> Vegetarian: {infoRecipe.vegetarian ? "Yes" : "No"} </p>
+        <ul>
+          Cuisines:
+          {infoRecipe.cuisines.map((el, i)=> (
+            <li key={i}>{el}</li>
+          ))}
+        </ul>
+        <ul>
+          Diets:
+          {infoRecipe.diets.map((el, i)=> (
+            <li key={i}>{el}</li>
+          ))}
+        </ul>
+       </div>
+        </div>
+
         <p>{summary}</p>
-        {recipe[0]?.steps.map((step) => (
+        {recipeIntruction[1]?.steps.map((step:any) => (
           <p key={step.number}>{`Step ${step.number}: ${step.step}`}</p>
         ))}
-      </div>
     <Link to='/'>
     <button className="btn-custom">
     Back
 </button>
 
-    </Link>
+    </Link>  
     </div>
   )
 }
